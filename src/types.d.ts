@@ -1,5 +1,10 @@
 export interface UseDropboxChooserOptions {
-  onSelected: (files: ReadonlyArray<Dropbox.ChooserFile>) => void
+  /**
+   * if passed, will be called with the selected files whenever files are selected.
+   * You can also use the promise which is returned from the `open` function.
+   * @param files
+   */
+  onSelected?: (files: ReadonlyArray<Dropbox.ChooserFile>) => void
   onCanceled?: () => void
   /**
    * if true, will not load dropbox script until `open` function is called.

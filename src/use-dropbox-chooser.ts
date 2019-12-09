@@ -7,10 +7,10 @@ export function useDropboxChooser({
   lazy,
   appKey: appKeyFromOptions,
   chooserOptions = {},
-  onSelected,
+  onSelected = () => {},
   onCanceled = () => {},
 }: UseDropboxChooserOptions) {
-  const [opening, setOpening] = useState(false)
+  const [isOpen, setOpen] = useState(false)
   const appKeyFromContext = useContext(DropboxAppContext)
 
   const appKey = appKeyFromOptions || appKeyFromContext
@@ -26,12 +26,12 @@ export function useDropboxChooser({
   }, [lazy, appKey])
 
   // useCallback is a choice here
-  const open = async () => {
-    if (opening) {
-      return
+  const open = async (): Promise<ReadonlyArray<Dropbox.ChooserFile>> => {
+    if (isOpen) {
+      return Promise.reject('Already opened')
     }
 
-    setOpening(true)
+    setOpen(true)
 
     // This is a no-op if it's already loaded. So no need to wrap it in
     // an if statement
@@ -42,23 +42,28 @@ export function useDropboxChooser({
     }
 
     if (window.Dropbox) {
-      window.Dropbox.choose({
-        success: files => {
-          setOpening(false)
-          onSelected(files)
-        },
-        cancel: () => {
-          setOpening(false)
-          onCanceled()
-        },
-        ...chooserOptions,
+      return new Promise((resolve, reject) => {
+        window.Dropbox!.choose({
+          success: files => {
+            setOpen(false)
+            onSelected(files)
+            resolve(files)
+          },
+          cancel: () => {
+            setOpen(false)
+            onCanceled()
+            reject()
+          },
+          ...chooserOptions,
+        })
       })
     }
+    return Promise.reject("window.Dropbox doesn't exist for some reason!")
   }
 
   return {
     open,
-    opening,
+    isOpen,
   }
 }
 
