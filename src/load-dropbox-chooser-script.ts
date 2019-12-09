@@ -35,3 +35,7 @@ export async function loadDropboxChooserScript(appKey: string) {
 
   return scriptPromise
 }
+
+export function isLoadingStarted() {
+  return scriptPromise !== null
+}

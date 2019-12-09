@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { DropboxAppContext } from './dropbox-app-context'
-import { loadDropboxChooserScript } from './load-dropbox-chooser-script'
+import { isLoadingStarted, loadDropboxChooserScript } from './load-dropbox-chooser-script'
 import { UseDropboxChooserOptions } from './types'
 
 export function useDropboxChooser({
@@ -15,22 +15,18 @@ export function useDropboxChooser({
 
   const appKey = appKeyFromOptions || appKeyFromContext
 
-  if (!appKey) {
-    console.error(
-      new Error(
-        'Dropbox app key is not provided. Please pass it to useDropboxChooser or provider it with DropboxAppProvider.',
-      ),
-    )
-  }
-
   useEffect(() => {
     if (!lazy && appKey) {
       // noinspection JSIgnoredPromiseFromCall
       loadDropboxChooserScript(appKey)
     }
-  }, [lazy])
+    if (!isLoadingStarted() && !appKey) {
+      logError()
+    }
+  }, [lazy, appKey])
 
-  let open = async () => {
+  // useCallback is a choice here
+  const open = async () => {
     if (opening) {
       return
     }
@@ -41,6 +37,8 @@ export function useDropboxChooser({
     // an if statement
     if (appKey) {
       await loadDropboxChooserScript(appKey)
+    } else {
+      logError()
     }
 
     if (window.Dropbox) {
@@ -58,5 +56,16 @@ export function useDropboxChooser({
     }
   }
 
-  return [open, opening]
+  return {
+    open,
+    opening,
+  }
+}
+
+function logError() {
+  console.error(
+    new Error(
+      'Dropbox app key is not provided. Please pass it to useDropboxChooser or provider it with DropboxAppProvider.',
+    ),
+  )
 }
