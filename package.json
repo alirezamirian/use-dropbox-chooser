@@ -1,0 +1,42 @@
+{
+  "name": "use-dropbox-chooser",
+  "description": "react hook for dropbox file chooser",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "unpkg": "dist/index.js",
+  "module": "es/index.js",
+  "typings": "./index.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src",
+    "index.d.ts",
+    "tsdoc-metadata.json"
+  ],
+  "scripts": {
+    "build": "libton-script build",
+    "build:doc": "libton-script doc",
+    "test": "libton-script test",
+    "lint": "libton-script lint",
+    "format": "libton-script format",
+    "format:check": "libton-script format --check",
+    "validate": "libton-script lint && libton-script format --check && libton-script test",
+    "prepublishOnly": "yarn validate && yarn build"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.23",
+    "@types/react": "^16.9.15",
+    "husky": "3.1.0",
+    "libton-script": "0.11.3",
+    "lint-staged": "9.5.0"
+  },
+  "peerDependencies": {
+    "react": ">16.8.0"
+  },
+  "dependencies": {
+    "@types/dropbox-chooser": "^1.0.2",
+    "load-script": "^1.0.0"
+  }
+}
