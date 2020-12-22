@@ -69,3 +69,27 @@ function YourComponent() {
   )
 }
 ```
+
+You can also use `DropboxAppProvider` to avoid passing `appKey` on each usage:
+
+```typescript jsx
+import { useDropboxChooser } from 'use-dropbox-chooser'
+
+function AppComponent() {
+
+  return (
+    <DropboxAppProvider value="YOUR_DROPBOX_APP_KEY">
+      <YourComponent />
+    </DropboxAppProvider>
+  )
+}
+
+function YourComponent() {
+  const { open, isOpen } = useDropboxChooser({
+    // no need for `appKey`.
+    chooserOptions: { multiple: true, linkType: 'direct' },
+  })
+
+  // ... similar to other examples
+}
+```
