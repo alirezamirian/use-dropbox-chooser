@@ -1,7 +1,7 @@
 {
   "name": "use-dropbox-chooser",
   "description": "react hook for dropbox file chooser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "main": "lib/index.js",
   "unpkg": "dist/index.js",
