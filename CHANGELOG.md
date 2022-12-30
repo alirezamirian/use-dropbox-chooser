@@ -2,7 +2,7 @@
 
 ## 0.0.6 (2022-12-30)
 
-- Fix typing to allow all relevant properties of `Dropbox.ChooserOptions` (#17)
+- Fix typing to allow all relevant properties of `Dropbox.ChooserOptions` ([#17](../../issues/17))
 
 <a name="0.0.5"></a>
 
