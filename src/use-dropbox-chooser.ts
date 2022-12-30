@@ -27,7 +27,7 @@ export interface UseDropboxChooserOptions {
    */
   appKey?: string
 
-  chooserOptions?: Pick<Dropbox.ChooserOptions, 'linkType' | 'multiselect' | 'extensions'>
+  chooserOptions?: Omit<Dropbox.ChooserOptions, 'cancel' | 'success'>
 }
 
 export function useDropboxChooser({
